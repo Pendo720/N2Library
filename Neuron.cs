@@ -19,6 +19,10 @@ namespace N2Library
         {
             Id = id;
             LayerIndex = layerIndex;
+            if(Id < 0 || LayerIndex < 0)
+            {
+                throw new InvalidOperationException("Neither Id nor LayerIndex can be negative");
+            }
             Gradient = 0.0;
             Weights = new List<N2Weight>();
         }

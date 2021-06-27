@@ -6,12 +6,12 @@ namespace N2Library
     {
         public static readonly int WEIGHTS_START_INDEX = 5;
         public int LayerId { get; set; }
-        private List<Neuron> mNetNeurons;
+        public List<Neuron> LayerNeurons { set; get; }
 
         public N2Layer(int id)
         {
             LayerId = id;
-            mNetNeurons = new List<Neuron>();
+            LayerNeurons = new List<Neuron>();
         }
 
         public N2Layer load(List<double> contents)
@@ -26,14 +26,14 @@ namespace N2Library
                 neuron.Weights.Add(con);
                 i += 2;
             }
-            mNetNeurons.Add(neuron);
+            LayerNeurons.Add(neuron);
             return this;
         }
 
-        public Neuron At(int index) => mNetNeurons.ToArray()[index];
+        public Neuron At(int index) => LayerNeurons.ToArray()[index];
 
-        public void Add(Neuron n) => mNetNeurons.Add(n);
+        public void Add(Neuron n) => LayerNeurons.Add(n);
 
-        public int Size() => mNetNeurons.Count;
+        public int Size() => LayerNeurons.Count;
     }
 }
