@@ -87,7 +87,6 @@ C:\Susu-ilo\Projects\Tracked-Git\N2Library\bin\Debug\netcoreapp3.1\zh-Hans\Micro
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.csproj.AssemblyReference.cache
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.AssemblyInfoInputs.cache
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.AssemblyInfo.cs
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.csproj.CoreCompileInputs.cache
