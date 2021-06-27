@@ -6,8 +6,8 @@ namespace N2Library
 {
     public class Neuron
     {
-        public static double ETA = 0.345;
-        public static double ALPHA = 0.5;
+        public static readonly double ETA = 0.345;
+        public static readonly double ALPHA = 0.5;
 
         public int Id { get; set; }
         public int LayerIndex { get; set; }
@@ -19,6 +19,10 @@ namespace N2Library
         {
             Id = id;
             LayerIndex = layerIndex;
+            if(Id < 0 || LayerIndex < 0)
+            {
+                throw new InvalidOperationException("Neither Id nor LayerIndex can be negative");
+            }
             Gradient = 0.0;
             Weights = new List<N2Weight>();
         }
@@ -36,27 +40,54 @@ namespace N2Library
 
         public void Feedforeward(N2Layer previous)
         {
-
+            double toReturn = 0.0;
+            Enumerable.Range(0, previous.Size())
+                .ToList()
+                .ForEach(f => toReturn = previous.At(f).Activation * previous.At(f).Weights.ElementAt(Id).Weight);
+            Activation = ActivationFunction(toReturn);
         }
 
         public void UpdateInputWeights(N2Layer previous)
         {
-
+            Enumerable.Range(0, previous.Size())
+                .ToList()
+                .ForEach(f =>{
+                        Neuron cur = previous.At(f);
+                        double oldDel = cur.Weights.ElementAt(Id).DeltaWeight;
+                        double newDel = ETA * cur.Activation * Gradient + ALPHA * oldDel;
+                        cur.Weights.ElementAt(Id).DeltaWeight = newDel;
+                        cur.Weights.ElementAt(Id).Weight += newDel;
+                    });
         }
 
-        double ActivationFunction(double x) { return Math.Tanh(x); }
+        double ActivationFunction(double x) 
+        { 
+            return Math.Tanh(x); 
+        }
 
-        double ActivationDerivativeFunction(double x) { return (1.0 - x * x); }
+        double ActivationDerivativeFunction(double x) 
+        { 
+            return (1.0 - x * x); 
+        }
 
-        void CalculateOutputGradient(double val) { Gradient = ((val - Activation) * ActivationDerivativeFunction(Activation)); }
+        void CalculateOutputGradient(double val) 
+        { 
+            Gradient = ((val - Activation) * ActivationDerivativeFunction(Activation)); 
+        }
 
         double SumDOW(N2Layer next)
         {
             double toReturn = 0.0f;
-            Enumerable.Range(0, next.size() - 1)
+            Enumerable.Range(0, next.Size() - 1)
                 .ToList()
-                .ForEach(f =>toReturn += Weights.ElementAt(f).Weight * next.get(f).Gradient);
+                .ForEach(f =>toReturn += Weights.ElementAt(f).Weight * next.At(f).Gradient);
             return toReturn;
         }
+
+        void CalculateHiddenGradients(N2Layer next) 
+        {
+            Gradient = SumDOW(next) * ActivationDerivativeFunction(Activation); 
+        }
+
     }
 }

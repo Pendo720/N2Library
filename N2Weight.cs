@@ -10,5 +10,7 @@
             Weight = weight;
             DeltaWeight = deltaWeight;
         }
+
+        public override string ToString() =>$"{Weight}, {DeltaWeight}";
     }
 }
