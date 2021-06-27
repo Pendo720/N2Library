@@ -94,3 +94,4 @@ C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.csp
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.dll
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.pdb
 C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.genruntimeconfig.cache
+C:\Susu-ilo\Projects\Tracked-Git\N2Library\obj\Debug\netcoreapp3.1\N2Library.csproj.AssemblyReference.cache
