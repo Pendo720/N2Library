@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace N2Library
 {
@@ -11,18 +15,18 @@ namespace N2Library
         public double Error { set; get; }
         public double AverageError { set; get; }
         public List<int> Topology { set; get; }
-        string mPath;
+        public string Path { set; get; }
 
         public N2Model(string filePath)
         {
-            mPath = filePath;
-            LoadModel(mPath);
+            Path = filePath;
+            ImportAsync(Path);
         }
 
         public N2Model(List<int> topology, string filePath)
         {
             Topology = topology;            
-            mPath = filePath;
+            Path = filePath;
             Layers = new List<N2Layer>();
             Enumerable.Range(0, Topology.Count)
                 .ToList()
@@ -41,7 +45,7 @@ namespace N2Library
                 });
         }
 
-        void FeedForward(List<double> inputs)
+        public void FeedForward(List<double> inputs)
         {
             Enumerable.Range(0, inputs.Count)
                 .ToList()
@@ -57,7 +61,7 @@ namespace N2Library
                 });
         }
 
-        void BackPropagate(List<double> targets)
+        public void BackPropagate(List<double> targets)
         {
             Error = 0.0;
             // calculate net error
@@ -98,7 +102,7 @@ namespace N2Library
             }
         }
 
-        void GetResults(List<double> results)
+        public void GetResults(List<double> results)
         {
             results.Clear();
             Enumerable.Range(0, Layers.ElementAt(Layers.Count - 1).Size() - 1)
@@ -106,95 +110,28 @@ namespace N2Library
                         .ForEach(f => results.Add(Layers.ElementAt(Layers.Count-1).At(f).Activation));
         }
 
-        void ExportNetwork(string modelFile)
+        public async Task ExportAsync(string modelFile)
         {
-
-/*            try
+            // Create the file, or overwrite if the file exists.
+            await using (FileStream fs = File.Create(modelFile))
             {
-                File fw = new File(modelFile);
-                FileOutputStream handle = new FileOutputStream(fw);
-                if (mTopology != null)
-                {
-                    final String[] sLine = { "topology: "};
-                    IntStream.range(0, mTopology.size())
-                            .forEach(i->sLine[0] += String.format(Locale.UK, "%d ", mTopology.get(i)));
-
-                    sLine[0] += String.format(Locale.UK, "\n%4.3f | % 4.3f | % 12.11f | %3.1f | % 12.11f", N2Neuron.mEta, N2Neuron.mAlpha, mAverageError, mAverageSmoothingFactor, mError);
-                    IntStream.range(0, mLayers.size())
-                            .forEach(i->sLine[0] += mLayers.get(i).export());
-                    handle.write(sLine[0].getBytes());
-                }
-                handle.close();
+                byte[] info = new UTF8Encoding(true).GetBytes(JsonSerializer.Serialize(this).ToString());
+                fs.Write(info, 0, info.Length);
             }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }*/
         }
 
-        public void LoadModel(string modelFile)
+        public Task ImportAsync(string modelFile)
         {
-            /*try
-            {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(modelFile)));
-                String sLine = reader.readLine();
-                if (sLine != null && sLine.contains("topology:"))
-                {
-                    sLine = sLine.substring(sLine.indexOf(':') + 1);
-                    mTopology = Stream.of(sLine.split(" "))
-                            .filter(s->!s.isEmpty())
-                            .map(Integer::valueOf).collect(Collectors.toList());
-
-                    mLayers = new ArrayList<>();
-                    sLine = reader.readLine();
-                    List<Double> parameters = Stream.of(sLine.split("\\s\\|"))
-                                                .filter(s->!s.isEmpty() && !s.contains("|"))
-                                                .map(Double::valueOf).collect(Collectors.toList());
-
-                    N2Neuron.mEta = parameters.get(0);
-                    N2Neuron.mAlpha = parameters.get(1);
-                    mAverageError = parameters.get(2);
-                    mAverageSmoothingFactor = parameters.get(3);
-                    mError = parameters.get(4);
-
-                    reader.lines()
-                        .forEach(l-> {
-                        if (!l.isEmpty())
-                        {
-                            List < Double > params =
-                               Stream.of(l.split("\\s"))
-                                       .filter(s-> !s.isEmpty() && !s.contains("|"))
-                                       .map(Double::valueOf).collect(Collectors.toList());
-
-                            int layer = params.get(0).intValue();
-                            N2Layer current = this.mLayers.stream().filter(i->i.getLayerId() == layer).findAny().orElse(null);
-                            if (current != null)
-                            {
-                                this.mLayers.get(layer).load(params);
-                            }
-                            else
-                            {
-                                N2Layer nl = new N2Layer(layer);
-                                this.mLayers.add(nl.load(params));
-                            }
-                        }
-                    });
-                }
-                reader.close();
-                //            Uncomment the following line verify correct loading by capturing the network state
-                //            exportNetwork(mPath + "/new_snapshot.txt");
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }*/
+            using StreamReader sr = File.OpenText(modelFile);
+            string sText = sr.ReadToEndAsync().Result;
+            N2Model model = JsonSerializer.Deserialize<N2Model>(sText);
+            return Task.CompletedTask;           
         }
 
-
-        public List<double> check(int input)
+        public List<double> Check(int input)
         {
             List<double> results = new List<double>();
-            //FeedForward(N2Utils.int2BitDoubles(input, Topology.ElementAt(0)));
+            FeedForward(N2Common.IntBitsAsDoubles(input, Topology.ElementAt(0)));
             GetResults(results);
             return results;
         }

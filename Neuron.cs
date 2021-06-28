@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace N2Library
-{
+{    
     public class Neuron
     {
         public static readonly double ETA = 0.345;

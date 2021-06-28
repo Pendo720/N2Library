@@ -3,8 +3,35 @@ using Xunit;
 
 namespace N2Library
 {
+    public class FieldTests
+    {
+        [Fact]
+        void Successful_Field_Creation()
+        {
+            // arrange
+            Field t = new Field();
+            // act 
+
+            // assert
+            Assert.True(t.Value.Equals(float.MinValue));
+            Assert.True(t.Name.Equals("None"));
+        }
+        [Fact]
+        void Normalise_Field()
+        {
+            // arrange
+            float xValue = 12.4f, fMin = 3.6f, fMax = 19.7f;
+            Field t = new Field("x", xValue);
+            // act 
+            t.Normalise(fMin, fMax);
+            // assert
+            Assert.True(t.Value.Equals((xValue - fMin) / fMax));
+        }
+    }
+
     public class NeuronTests
     {
+
         [Fact]
         void Successful_Creation()
         {
@@ -20,7 +47,7 @@ namespace N2Library
             // arrange
             // act
             //assert            
-            Assert.Throws<InvalidOperationException>(() =>new Neuron(-1, 0));
+            Assert.Throws<InvalidOperationException>(() => new Neuron(-1, 0));
         }
     }
 
@@ -31,7 +58,7 @@ namespace N2Library
         {
             // arrange
             N2Weight t = new N2Weight(0.12, 0.23);
-            
+
             // act
 
             // assert
@@ -48,7 +75,7 @@ namespace N2Library
             // arrange
             N2Layer t = new N2Layer(0);
             // act 
-            t.Add(new Neuron(id:0, layerIndex: 0));
+            t.Add(new Neuron(id: 0, layerIndex: 0));
             // assert
             Assert.NotNull(t);
             Assert.NotNull(t.LayerNeurons);
@@ -73,9 +100,19 @@ namespace N2Library
             // arrange
             N2Layer t = new N2Layer(0);
             // act 
-            
+
             // assert
-            Assert.Throws<IndexOutOfRangeException>(()=>t.At(0));
+            Assert.Throws<IndexOutOfRangeException>(() => t.At(0));
         }
+    }
+
+    public class N2TrainerTests { 
+    
+    }
+    public class N2ModelTests { 
+    
+    }
+    public class N2PipelineTests { 
+    
     }
 }
