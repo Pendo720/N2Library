@@ -26,7 +26,7 @@ namespace N2Library
             Gradient = 0.0;
             Weights = new List<N2Weight>();
         }
-        Neuron(int outputs, int layer, int id)
+        public Neuron(int outputs, int layer, int id)
         {
             Id = id;
             LayerIndex = layer;
@@ -38,7 +38,7 @@ namespace N2Library
         }
 
 
-        public void Feedforeward(N2Layer previous)
+        public void FeedForward(N2Layer previous)
         {
             double toReturn = 0.0;
             Enumerable.Range(0, previous.Size())
@@ -70,7 +70,7 @@ namespace N2Library
             return (1.0 - x * x); 
         }
 
-        void CalculateOutputGradient(double val) 
+        public void CalculateOutputGradient(double val) 
         { 
             Gradient = ((val - Activation) * ActivationDerivativeFunction(Activation)); 
         }
@@ -84,10 +84,9 @@ namespace N2Library
             return toReturn;
         }
 
-        void CalculateHiddenGradients(N2Layer next) 
+        public void CalculateHiddenGradients(N2Layer next) 
         {
             Gradient = SumDOW(next) * ActivationDerivativeFunction(Activation); 
         }
-
     }
 }
