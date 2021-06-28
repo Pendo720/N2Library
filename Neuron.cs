@@ -13,8 +13,8 @@ namespace N2Library
         public int LayerIndex { get; set; }
         public double Activation { get; set; }
         public double Gradient{ get; set; }
-
         public List<N2Weight> Weights { get; set; }
+        
         public Neuron(int id, int layerIndex)
         {
             Id = id;
@@ -60,20 +60,13 @@ namespace N2Library
                     });
         }
 
-        double ActivationFunction(double x) 
-        { 
-            return Math.Tanh(x); 
-        }
+        double ActivationFunction(double x) => Math.Tanh(x);
 
-        double ActivationDerivativeFunction(double x) 
-        { 
-            return (1.0 - x * x); 
-        }
+        double ActivationDerivativeFunction(double x) => (1.0 - x * x);
 
-        public void CalculateOutputGradient(double val) 
-        { 
-            Gradient = ((val - Activation) * ActivationDerivativeFunction(Activation)); 
-        }
+        public void CalculateOutputGradient(double val) => Gradient = ((val - Activation) * ActivationDerivativeFunction(Activation));
+
+        public void CalculateHiddenGradients(N2Layer next) => Gradient = SumDOW(next) * ActivationDerivativeFunction(Activation);
 
         double SumDOW(N2Layer next)
         {
@@ -82,11 +75,6 @@ namespace N2Library
                 .ToList()
                 .ForEach(f =>toReturn += Weights.ElementAt(f).Weight * next.At(f).Gradient);
             return toReturn;
-        }
-
-        public void CalculateHiddenGradients(N2Layer next) 
-        {
-            Gradient = SumDOW(next) * ActivationDerivativeFunction(Activation); 
         }
     }
 }

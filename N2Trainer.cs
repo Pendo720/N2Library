@@ -143,7 +143,7 @@ namespace N2Library
         public static string SavedModelFilename(List<int> topology)
         {
             string sModel = string.Empty;
-            topology.ForEach(c => sModel += $"{c}");
+            topology.ForEach(c => sModel += $"{c}_");
             sModel += ".txt";
             return sModel;
         }

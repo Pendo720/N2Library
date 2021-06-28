@@ -15,7 +15,7 @@ namespace N2Library
                     .ToList(); 
         }
 
-        public static String StringifyList(List<double> doubles)
+        public static string StringifyList(List<double> doubles)
         {
             string stoReturn = string.Empty;
             doubles.ForEach(d =>stoReturn += $"{d},");
