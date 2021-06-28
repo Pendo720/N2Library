@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace N2Library
@@ -113,9 +114,9 @@ namespace N2Library
             {
                 File fw = new File(modelFile);
                 FileOutputStream handle = new FileOutputStream(fw);
-                if (mTopology != null)
+                if (Topology != null)
                 {
-                    final String[] sLine = { "topology: "};
+                    string[] sLine = { "topology: "};
                     IntStream.range(0, mTopology.size())
                             .forEach(i->sLine[0] += String.format(Locale.UK, "%d ", mTopology.get(i)));
 

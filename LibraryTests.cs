@@ -3,8 +3,35 @@ using Xunit;
 
 namespace N2Library
 {
+    public class FieldTests
+    {
+        [Fact]
+        void Successful_Field_Creation()
+        {
+            // arrange
+            Field t = new Field();
+            // act 
+
+            // assert
+            Assert.True(t.Value.Equals(float.MinValue));
+            Assert.True(t.Name.Equals("None"));
+        }
+        [Fact]
+        void Normalise_Field()
+        {
+            // arrange
+            float xValue = 12.4f, fMin = 3.6f, fMax = 19.7f; 
+            Field t = new Field("x", xValue);
+            // act 
+            t.Normalise(fMin, fMax);
+            // assert
+            Assert.True(t.Value.Equals((xValue-fMin)/fMax));
+        }
+    }
+
     public class NeuronTests
     {
+
         [Fact]
         void Successful_Creation()
         {
@@ -78,4 +105,8 @@ namespace N2Library
             Assert.Throws<IndexOutOfRangeException>(()=>t.At(0));
         }
     }
+
+    public class N2TrainerTests { }
+    public class N2ModelTests { }
+    public class N2PipelineTests { }
 }
