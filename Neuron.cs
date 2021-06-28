@@ -88,6 +88,5 @@ namespace N2Library
         {
             Gradient = SumDOW(next) * ActivationDerivativeFunction(Activation); 
         }
-
     }
 }
