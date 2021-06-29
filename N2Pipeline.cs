@@ -23,11 +23,13 @@ namespace N2Library
         //     The default splitting ratio is 60%, 20% and 20%
         private void Split(float training = 0.6f)
         {
-            int train = (int)(training * Data.Count);
-            int other = (int)(0.5 * (1 - training) * Data.Count);
-            Training = Data.Take(train).ToList();
-            Testing = Data.Skip(train).Take(other).ToList();
-            CrossValidation = Data.Skip(train + other).ToList();
+            int count = (int)(training * Data.Count);
+            Training = Data.Take(count).ToList();
+            
+            count = (Data.Count - Training.Count) /2;
+            Testing = Data.Skip(Training.Count).Take(count).ToList();
+            
+            CrossValidation = Data.Skip(Training.Count + Testing.Count).Take(count).ToList();
         }
 
         /*public static List<T> ShuffleAndDuplicate(List<T> items, int times)
