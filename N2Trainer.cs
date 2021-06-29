@@ -19,7 +19,7 @@ namespace N2Library
         
         public N2Pipeline<T> Pipeline { set; get; }
         
-        public N2Trainer(string filePath, string fileName, bool loggingOn)
+        public N2Trainer(string filePath, bool loggingOn)
         {
             Model = new N2Model(filePath);
             LoggingOn = loggingOn;
